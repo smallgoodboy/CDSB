@@ -34,6 +34,8 @@
 -(void)getModuleServerData : (NSString*)contentURLString;
 -(void)analyseModuleServerData : (id)backDataObj;
 
+-(void)clearBackData;
+
 -(NSInteger)getSectionOrRowCount;
 -(NSInteger)getRowCountOfSection : (NSInteger)section;
 -(BackDataNode*)getNodeInSection : (NSInteger)section andRow : (NSInteger)row;

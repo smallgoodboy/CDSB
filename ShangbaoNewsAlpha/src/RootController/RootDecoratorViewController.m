@@ -10,6 +10,7 @@
 #import "StaticResourceManager.h"
 #import "RootDecoratorNavigationBar.h"
 
+
 @implementation RootDecoratorViewController
 
 @synthesize navigationBarTitleString;
@@ -38,6 +39,13 @@
 
 -(BOOL)shouldAutorotate{
     return NO;
+}
+
+-(BOOL) navigationShouldPopOnBackButton ///在这个方法里写返回按钮的事件处理
+{
+    [self.navigationController popViewControllerAnimated:YES];
+    NSLog(@"backing backing");
+    return YES;
 }
 
 @end

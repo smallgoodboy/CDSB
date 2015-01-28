@@ -14,6 +14,9 @@
 #import "PictureChengduBackDataController.h"
 #import "LocalReportBackDataController.h"
 #import "NewestInfoBackDataController.h"
+#import "PictureChengduCollectionBackDataController.h"
+
+#import "OfflineCacher.h"
 
 static MainBackDataLoader* mainBackDataLoaderSigliton;
 
@@ -28,10 +31,13 @@ static MainBackDataLoader* mainBackDataLoaderSigliton;
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     [manager GET:ServerHomePageURLStringStatic parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"main json got!");
+        [OfflineCacher cacheObj:responseObject forKey:ServerHomePageURLStringStatic];
         [[MainBackDataLoader getInstance] analyseMainPage: responseObject];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [PopOverHintManager showPopover:NetWorkDown];
         NSLog(@"Error: %@", error);
+        
+        [[MainBackDataLoader getInstance] analyseMainPage: [OfflineCacher getObjForKey:ServerHomePageURLStringStatic]];
     }];
 }
 
@@ -72,6 +78,7 @@ static MainBackDataLoader* mainBackDataLoaderSigliton;
     [[PictureChengduBackDataController getInstance] reloadBackData:pictureChengduContentURLString];
     [[LocalReportBackDataController getInstance] reloadBackData:localReportContentURLString];
     [[NewestInfoBackDataController getInstance] reloadBackData:newestInfoContentURLString];
+    [[PictureChengduCollectionBackDataController getInstance] reloadBackData:pictureChengduContentURLString];
 }
 
 - (NSString*) getUrlFrom :(NSMutableDictionary*) dict andKey: (NSString*)key andBaseUrl: (NSString*) base{

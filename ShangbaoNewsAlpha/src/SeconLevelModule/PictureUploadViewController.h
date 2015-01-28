@@ -26,5 +26,6 @@
 @property (weak, nonatomic) IBOutlet UITextView *newsSummaryLabel;
 @property (weak, nonatomic) IBOutlet UploadProgressView *uploadProgressView;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *pictureUploadButtonItem;
+@property (weak, nonatomic) IBOutlet UIPickerView *activityPickerView;
 
 @end

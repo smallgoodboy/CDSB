@@ -80,8 +80,10 @@ static UserBackDataManager* userBackDataManagerSigliton;
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
     [manager GET:UserLogoutBaseURLStringStatic parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"退出成功");
+        [self deleteCookies];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"退出失败");
+        [self deleteCookies];
     }];
 }
 

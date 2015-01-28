@@ -15,6 +15,7 @@
 @property NSString* localReportContentURLString;
 @property NSString* pictureChengduContentURLString;
 
+
 +(MainBackDataLoader*)getInstance;
 
 -(void)loadMainPage;

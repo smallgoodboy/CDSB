@@ -13,6 +13,8 @@
 #import "StaticResourceManager.h"
 #import "UMSocial.h"
 
+#import "PopOverHintManager.h"
+
 @interface EssayContentViewController ()<UIWebViewDelegate>
 
 @end
@@ -95,8 +97,10 @@
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     [manager PUT:[NSString stringWithFormat:@"%@/%ld/%@", CommentBaseURLStringStatic, (long)articleID, @"like"] parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"zan le yi ge:%@", responseObject);
+        [PopOverHintManager showPopover:LikeClickSuccess];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"shi bai le a");
+        [PopOverHintManager showPopover:NetWorkDown];
     }];
 }
 

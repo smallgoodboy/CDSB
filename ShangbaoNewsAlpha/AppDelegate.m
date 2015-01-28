@@ -21,6 +21,9 @@
             
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    
+    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
+    
     [UMSocialData setAppKey:@"507fcab25270157b37000010"];
     
     NSInteger newsToOpen = -1;

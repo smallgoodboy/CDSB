@@ -22,6 +22,7 @@ static PublicContent2LevelBackDataController* publicContent2LevelBackDataControl
 
 -(void)analyseModuleServerData : (id)backDataObj{
     if(![backDataObj isKindOfClass:[NSDictionary class]]){
+        [self.frontTableView reloadData];
         return;
     }
     

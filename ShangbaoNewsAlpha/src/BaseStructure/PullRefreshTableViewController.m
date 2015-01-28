@@ -7,6 +7,7 @@
 //
 
 #import "PullRefreshTableViewController.h"
+#import "RootDecoratorNavigationController.h"
 
 @interface PullRefreshTableViewController ()<PullTableViewDelegate>
 
@@ -14,6 +15,7 @@
 
 @implementation PullRefreshTableViewController{
     BOOL isFirstRefresh;
+    NSDate* lastRefreshDate;
 }
 
 @synthesize frontPullTableViewBackCache;
@@ -23,13 +25,16 @@
 - (void)viewDidLoad {
     isFirstRefresh = YES;
     [super viewDidLoad];
+    
+    [(RootDecoratorNavigationController*)self.navigationController setActionTakeBeforeBack:self selector:@selector(clearTableBeforeBack)];
     // Do any additional setup after loading the view.
     frontPullTableViewBackCache.pullDelegate = self;
     
     frontPullTableViewBackCache.pullArrowImage = [UIImage imageNamed:@"blackArrow"];
     frontPullTableViewBackCache.pullBackgroundColor = [UIColor yellowColor];
     frontPullTableViewBackCache.pullTextColor = [UIColor blackColor];
-    frontPullTableViewBackCache.pullLastRefreshDate = [NSDate date];
+    
+    lastRefreshDate = [[NSDate alloc] initWithTimeIntervalSince1970:0];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -56,6 +61,7 @@
      */
     [backDataBaseControllerInstance reloadBackData];
     frontPullTableViewBackCache.pullLastRefreshDate = [NSDate date];
+    lastRefreshDate = [NSDate date];
     [self performSelector:@selector(stopRefresh) withObject:nil afterDelay:0.5];
 }
 
@@ -74,7 +80,6 @@
 
 - (void)pullTableViewDidTriggerRefresh:(PullTableView *)pullTableView
 {
-    
     [self refreshTable];
 }
 
@@ -91,13 +96,12 @@
 
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
-    if (![[[NSDate alloc] initWithTimeInterval:-3*60 sinceDate:[NSDate date]] laterDate:[frontPullTableViewBackCache pullLastRefreshDate]] || isFirstRefresh) {
-        
+    NSLog(@"%f",[lastRefreshDate timeIntervalSinceNow]);
+    if ([lastRefreshDate timeIntervalSinceNow] <= -3*60) {
         if(!frontPullTableViewBackCache.pullTableIsRefreshing) {
             frontPullTableViewBackCache.pullTableIsRefreshing = YES;
             [self refreshTable];
         }
-        isFirstRefresh = NO;
     }
     isViewAppear = true;
 }
@@ -105,6 +109,10 @@
 -(void)viewDidDisappear:(BOOL)animated{
     [super viewDidDisappear:animated];
     isViewAppear = false;
+}
+
+-(void)clearTableBeforeBack{
+    [backDataBaseControllerInstance clearBackData];
 }
 
 

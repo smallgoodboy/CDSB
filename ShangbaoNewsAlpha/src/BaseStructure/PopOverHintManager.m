@@ -11,9 +11,16 @@
 #import "BDKNotifyHUD.h"
 #import "RootTabBarController.h"
 
+BOOL isPopoverShowing = NO;
+
 @implementation PopOverHintManager
 
 +(void)showPopover : (enum NetWorkStatusCode)type inView : (UIView*)viewToShow{
+    /*if(!isPopoverShowing){
+        isPopoverShowing = YES;
+    }else{
+        return;
+    }*/
     BDKNotifyHUD *hud;
     switch (type) {
         case UpLoadSuccess:
@@ -37,10 +44,16 @@
     [viewToShow addSubview:hud];
     [hud presentWithDuration:1.0f speed:0.5f inView:viewToShow completion:^{
         [hud removeFromSuperview];
+        isPopoverShowing = NO;
     }];
 }
 
 +(void)showPopover : (enum NetWorkStatusCode)type{
+    /*if(!isPopoverShowing){
+        isPopoverShowing = YES;
+    }else{
+        return;
+    }*/
     BDKNotifyHUD *hud;
     switch (type) {
         case UpLoadSuccess:
@@ -53,6 +66,9 @@
         case NetWorkDown:
             hud = [BDKNotifyHUD notifyHUDWithImage:[UIImage imageNamed:@"x-6x.png"] text:@"网络断开"];
             break;
+        case LikeClickSuccess:
+            hud = [BDKNotifyHUD notifyHUDWithImage:[UIImage imageNamed:@"check-6x.png"] text:@"赞 成功"];
+            break;
         default:
             hud = [BDKNotifyHUD notifyHUDWithImage:[UIImage imageNamed:@"x-6x.png"] text:@"未知错误"];
             break;
@@ -64,6 +80,7 @@
     [appShowingView addSubview:hud];
     [hud presentWithDuration:1.0f speed:0.5f inView:appShowingView completion:^{
         [hud removeFromSuperview];
+        isPopoverShowing = NO;
     }];
 }
 

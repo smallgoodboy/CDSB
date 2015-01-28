@@ -8,9 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import "AppDelegate.h"
+#import "OfflineCacher.h"
 
 int main(int argc, char * argv[]) {
     @autoreleasepool {
+        [OfflineCacher readCache];
         return UIApplicationMain(argc, argv, nil, NSStringFromClass([AppDelegate class]));
     }
 }

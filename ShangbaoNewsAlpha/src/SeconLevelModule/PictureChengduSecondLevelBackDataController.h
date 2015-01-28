@@ -12,4 +12,5 @@
 
 +(PictureChengduSecondLevelBackDataController*)getInstance;
 
+
 @end

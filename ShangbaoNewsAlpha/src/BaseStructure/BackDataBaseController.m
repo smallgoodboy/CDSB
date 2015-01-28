@@ -12,6 +12,8 @@
 #import "MainBackDataLoader.h"
 #import "PopOverHintManager.h"
 
+#import "OfflineCacher.h"
+
 @implementation BackDataBaseController{
     BOOL isRefreshingTableAndNotLoadingMore;
 }
@@ -75,6 +77,7 @@
 -(void)getModuleServerData : (NSString*)contentURLString{
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     [manager GET:contentURLString parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [OfflineCacher cacheObj:responseObject forKey:contentURLString];
         NSLog(@"Modlue json got!");
         if(isRefreshingTableAndNotLoadingMore){
             [backDataArray removeAllObjects];
@@ -83,10 +86,20 @@
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         pageLoadednumber--;
         NSLog(@"Error: %@", error);
+        
+        if(isRefreshingTableAndNotLoadingMore){
+            [backDataArray removeAllObjects];
+        }
+        [self analyseModuleServerData:[OfflineCacher getObjForKey:contentURLString]];
     }];
 }
 
 -(void)analyseModuleServerData : (id)backDataObj{}
+
+-(void)clearBackData{
+    [backDataArray removeAllObjects];
+    [self.frontTableView reloadData];
+}
 
 
 -(NSInteger)getSectionOrRowCount{

@@ -7,6 +7,7 @@
 //
 
 #import "PullRefreshViewController.h"
+#import "RootDecoratorNavigationController.h"
 
 @interface PullRefreshViewController ()<PullTableViewDelegate>
 
@@ -14,6 +15,7 @@
 
 @implementation PullRefreshViewController{
     BOOL isFirstRefresh;
+    NSDate* lastRefreshDate;
 }
 
 @synthesize frontPullTableViewBackCache;
@@ -24,11 +26,14 @@
     isFirstRefresh = YES;
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    [(RootDecoratorNavigationController*)self.navigationController setActionTakeBeforeBack:self selector:@selector(clearTableBeforeBack)];
+    
     frontPullTableViewBackCache.pullDelegate = self;
     
     frontPullTableViewBackCache.pullArrowImage = [UIImage imageNamed:@"blackArrow"];
     frontPullTableViewBackCache.pullBackgroundColor = [UIColor yellowColor];
     frontPullTableViewBackCache.pullTextColor = [UIColor blackColor];
+    lastRefreshDate = [[NSDate alloc] initWithTimeIntervalSince1970:0];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -55,6 +60,7 @@
      */
     [backDataBaseControllerInstance reloadBackData];
     frontPullTableViewBackCache.pullLastRefreshDate = [NSDate date];
+    lastRefreshDate = [NSDate date];
     [self performSelector:@selector(stopRefresh) withObject:nil afterDelay:0.5];
 }
 
@@ -90,13 +96,11 @@
 
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
-    if (![[[NSDate alloc] initWithTimeInterval:-3*60 sinceDate:[NSDate date]] laterDate:[frontPullTableViewBackCache pullLastRefreshDate]] || isFirstRefresh) {
-        
+    if ([lastRefreshDate timeIntervalSinceNow] <= -3*60) {
         if(!frontPullTableViewBackCache.pullTableIsRefreshing) {
             frontPullTableViewBackCache.pullTableIsRefreshing = YES;
             [self refreshTable];
         }
-        isFirstRefresh = NO;
     }
     isViewAppear = true;
 }
@@ -104,6 +108,10 @@
 -(void)viewDidDisappear:(BOOL)animated{
     [super viewDidDisappear:animated];
     isViewAppear = false;
+}
+
+-(void)clearTableBeforeBack{
+    [backDataBaseControllerInstance clearBackData];
 }
 
 
