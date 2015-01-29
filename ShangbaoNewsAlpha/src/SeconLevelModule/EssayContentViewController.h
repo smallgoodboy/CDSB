@@ -22,5 +22,6 @@
 -(void)loadServerArticle;
 -(void)loadWebPage : (id)webPageObj;
 
+- (IBAction)showPopMenuClicked:(id)sender;
 
 @end

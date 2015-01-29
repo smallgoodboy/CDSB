@@ -9,6 +9,7 @@
 #import "BaseCollectionViewController.h"
 #import "MJRefresh.h"
 #import "RootDecoratorNavigationController.h"
+#import "StaticResourceManager.h"
 
 @interface BaseCollectionViewController ()
 
@@ -126,7 +127,7 @@ static NSString * const reuseIdentifier = @"Cell";
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
     //NSLog(@"%f",[lastRefreshDate timeIntervalSinceNow]);
-    if ([lastRefreshDate timeIntervalSinceNow] <= -3*60){
+    if ([lastRefreshDate timeIntervalSinceNow] <= AutoRefreshTimeIntervalSecondInt){
         isFirstRefresh = NO;
         [self.collectionView headerBeginRefreshing];
     }

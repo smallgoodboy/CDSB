@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6185.7" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="DMb-hp-zNb">
     <dependencies>
+        <deployment defaultVersion="1792" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6181.2"/>
     </dependencies>
     <scenes>
@@ -695,65 +696,22 @@
                             <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XyA-ln-8wG">
                                 <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <variation key="widthClass=compact" ambiguous="YES" misplaced="YES">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="416"/>
+                                </variation>
                             </webView>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gNP-Ec-xv4">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="44" id="ieZ-uk-bMf"/>
-                                </constraints>
-                                <items>
-                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="by0-8J-Lra"/>
-                                    <barButtonItem title="赞" id="GiS-nl-GLe">
-                                        <color key="tintColor" red="0.90196078430000004" green="0.12941176469999999" blue="0.16078431369999999" alpha="1" colorSpace="calibratedRGB"/>
-                                        <connections>
-                                            <action selector="likeClicked:" destination="O5k-vb-BAa" id="MzA-x5-rpt"/>
-                                        </connections>
-                                    </barButtonItem>
-                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="wq0-oK-nGn"/>
-                                    <barButtonItem title="分享" id="tzC-mh-eNg">
-                                        <color key="tintColor" red="0.90196078430000004" green="0.12941176469999999" blue="0.16078431369999999" alpha="1" colorSpace="calibratedRGB"/>
-                                    </barButtonItem>
-                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="dJy-yU-o3W"/>
-                                    <barButtonItem title="评论" id="n54-Jn-yfV">
-                                        <color key="tintColor" red="0.90196078430000004" green="0.12941176469999999" blue="0.16078431369999999" alpha="1" colorSpace="calibratedRGB"/>
-                                        <connections>
-                                            <segue destination="28f-CH-EKV" kind="show" id="Zbp-FI-G18"/>
-                                        </connections>
-                                    </barButtonItem>
-                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="AON-A4-YWf"/>
-                                </items>
-                                <variation key="default">
-                                    <mask key="constraints">
-                                        <exclude reference="ieZ-uk-bMf"/>
-                                    </mask>
-                                </variation>
-                                <variation key="widthClass=compact">
-                                    <mask key="constraints">
-                                        <include reference="ieZ-uk-bMf"/>
-                                    </mask>
-                                </variation>
-                            </toolbar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="gNP-Ec-xv4" secondAttribute="trailing" id="1en-cP-XiF"/>
                             <constraint firstItem="XyA-ln-8wG" firstAttribute="top" secondItem="mGY-Q0-ur0" secondAttribute="bottom" id="a3z-Ss-vPn"/>
-                            <constraint firstItem="gNP-Ec-xv4" firstAttribute="top" secondItem="XyA-ln-8wG" secondAttribute="bottom" id="cst-xI-6C1"/>
-                            <constraint firstItem="alz-zm-Zqd" firstAttribute="top" secondItem="gNP-Ec-xv4" secondAttribute="bottom" id="e0a-WE-nsC"/>
                             <constraint firstItem="XyA-ln-8wG" firstAttribute="leading" secondItem="x0f-R7-Yzs" secondAttribute="leading" id="tv4-Ld-k40"/>
                             <constraint firstAttribute="trailing" secondItem="XyA-ln-8wG" secondAttribute="trailing" id="wfc-XR-IGi"/>
-                            <constraint firstItem="gNP-Ec-xv4" firstAttribute="leading" secondItem="x0f-R7-Yzs" secondAttribute="leading" id="zJq-Uu-IKH"/>
                         </constraints>
                         <variation key="default">
                             <mask key="subviews">
                                 <exclude reference="XyA-ln-8wG"/>
-                                <exclude reference="gNP-Ec-xv4"/>
                             </mask>
                             <mask key="constraints">
-                                <exclude reference="e0a-WE-nsC"/>
-                                <exclude reference="1en-cP-XiF"/>
-                                <exclude reference="cst-xI-6C1"/>
-                                <exclude reference="zJq-Uu-IKH"/>
                                 <exclude reference="a3z-Ss-vPn"/>
                                 <exclude reference="tv4-Ld-k40"/>
                                 <exclude reference="wfc-XR-IGi"/>
@@ -762,22 +720,26 @@
                         <variation key="widthClass=compact">
                             <mask key="subviews">
                                 <include reference="XyA-ln-8wG"/>
-                                <include reference="gNP-Ec-xv4"/>
                             </mask>
                             <mask key="constraints">
-                                <include reference="e0a-WE-nsC"/>
-                                <include reference="1en-cP-XiF"/>
-                                <include reference="cst-xI-6C1"/>
-                                <include reference="zJq-Uu-IKH"/>
                                 <include reference="a3z-Ss-vPn"/>
                                 <include reference="tv4-Ld-k40"/>
                                 <include reference="wfc-XR-IGi"/>
                             </mask>
                         </variation>
                     </view>
+                    <navigationItem key="navigationItem" id="SFi-Jt-dYc">
+                        <barButtonItem key="rightBarButtonItem" title="...." id="1BQ-h9-xPR">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <connections>
+                                <action selector="showPopMenuClicked:" destination="O5k-vb-BAa" id="pvb-Kw-9Ru"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="essayShowWebView" destination="XyA-ln-8wG" id="gb5-9R-so0"/>
+                        <segue destination="28f-CH-EKV" kind="show" identifier="EssayCommentSegue" id="7Je-W4-mFe"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8Zi-4O-WuM" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2330,7 +2292,7 @@
         <scene sceneID="XUI-Gw-UEn">
             <objects>
                 <tableViewController id="jf4-o6-gbq" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="HWp-di-XQb">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="singleLineEtched" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="HWp-di-XQb">
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <sections>
@@ -2855,8 +2817,8 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="Ay0-dD-RKh"/>
-        <segue reference="ES5-un-iA2"/>
-        <segue reference="tk7-XE-08L"/>
+        <segue reference="ScM-DC-pJr"/>
+        <segue reference="ZGs-tY-3tG"/>
         <segue reference="vT3-FA-qMf"/>
     </inferredMetricsTieBreakers>
 </document>

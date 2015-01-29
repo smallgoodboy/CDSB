@@ -14,8 +14,11 @@
 #import "UMSocial.h"
 
 #import "PopOverHintManager.h"
+#import "EssayToolPopoverSelectViewController.h"
 
-@interface EssayContentViewController ()<UIWebViewDelegate>
+@interface EssayContentViewController ()<UIWebViewDelegate>{
+    EssayToolPopoverSelectViewController* essayToolPopoverSelectViewController;
+}
 
 @end
 
@@ -35,6 +38,10 @@
     //NSLog(@"%@", essayViewController.essayShowWebView);
     //[self.essayShowWebView loadRequest:request];
     [self loadServerArticle];
+    
+    essayToolPopoverSelectViewController = [[EssayToolPopoverSelectViewController alloc] init];
+    [self.essayShowWebView addSubview:essayToolPopoverSelectViewController.view];
+    [essayToolPopoverSelectViewController initCallBackWithTarget:self commentCallBack:@selector(commentClicked) likeCallBack:@selector(likeClicked:)];
 }
 
 -(void)loadServerArticle{
@@ -80,6 +87,14 @@
     [self.essayShowWebView loadHTMLString:dataToload baseURL:nil];
 }
 
+- (IBAction)showPopMenuClicked:(id)sender {
+    if([essayToolPopoverSelectViewController isPopMenuOpen]){
+        [essayToolPopoverSelectViewController closePopMenu];
+    }else{
+        [essayToolPopoverSelectViewController openPopMenu];
+    }
+}
+
 
 - (IBAction)backClicked:(id)sender {
     if([self.essayShowWebView canGoBack]){
@@ -102,6 +117,14 @@
         NSLog(@"shi bai le a");
         [PopOverHintManager showPopover:NetWorkDown];
     }];
+}
+
+-(void)likeClicked{
+    [self likeClicked:self];
+}
+
+-(void)commentClicked{
+    [self performSegueWithIdentifier:EssayCommentToShowSegueNameStringStatic sender:self];
 }
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{

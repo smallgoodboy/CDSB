@@ -46,8 +46,11 @@ static NSString* UserStatusNotLoginSegueNameStringStatic = @"UserStatusNotLoginS
 static NSString* UserAdviseToLoginSegueNameStringStatic = @"AdviseUserToLoginSegue";
 static NSString* PictureUploadSegueNameStringStatic = @"PictureUploadSegue";
 static NSString* ShangbaoOriginNotifyToShowSegueNameStringStatic = @"NotifiedToShowNewsSegue";
+static NSString* EssayCommentToShowSegueNameStringStatic = @"EssayCommentSegue";
 
 static NSString* CacheFileNameStringStatic = @"cacheData.plist";
+
+const NSInteger AutoRefreshTimeIntervalSecondInt = -180;
 
 enum NetWorkStatusCode{
     UpLoadSuccess,

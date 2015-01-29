@@ -8,6 +8,7 @@
 
 #import "PullRefreshViewController.h"
 #import "RootDecoratorNavigationController.h"
+#import "StaticResourceManager.h"
 
 @interface PullRefreshViewController ()<PullTableViewDelegate>
 
@@ -96,8 +97,9 @@
 
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
-    if ([lastRefreshDate timeIntervalSinceNow] <= -3*60) {
+    if ([lastRefreshDate timeIntervalSinceNow] <= AutoRefreshTimeIntervalSecondInt) {
         if(!frontPullTableViewBackCache.pullTableIsRefreshing) {
+            [self.frontPullTableViewBackCache setContentOffset:CGPointMake(0, 0) animated:NO];
             frontPullTableViewBackCache.pullTableIsRefreshing = YES;
             [self refreshTable];
         }
