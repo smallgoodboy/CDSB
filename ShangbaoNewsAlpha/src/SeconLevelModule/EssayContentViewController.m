@@ -15,6 +15,7 @@
 
 #import "PopOverHintManager.h"
 #import "EssayToolPopoverSelectViewController.h"
+#import "UserCollectionBackDataController.h"
 
 @interface EssayContentViewController ()<UIWebViewDelegate>{
     EssayToolPopoverSelectViewController* essayToolPopoverSelectViewController;
@@ -41,7 +42,8 @@
     
     essayToolPopoverSelectViewController = [[EssayToolPopoverSelectViewController alloc] init];
     [self.essayShowWebView addSubview:essayToolPopoverSelectViewController.view];
-    [essayToolPopoverSelectViewController initCallBackWithTarget:self commentCallBack:@selector(commentClicked) likeCallBack:@selector(likeClicked:)];
+    [essayToolPopoverSelectViewController initCallBackWithTarget:self commentCallBack:@selector(commentClicked) likeCallBack:@selector(likeClicked:) userCollectionCallBack:@selector(collectClicked)];
+    [essayToolPopoverSelectViewController initShareCallBackWeibo:@selector(weiboShareClickedCallBack) tencentWeibo:@selector(tencentWeiboShareClickedCallBack) wechatFriends:@selector(wechatFriendsShareClickedCallBack) wechatFriendsCircel:@selector(wechatFriendsCircleShareClickedCallBack)];
 }
 
 -(void)loadServerArticle{
@@ -126,6 +128,29 @@
 -(void)commentClicked{
     [self performSegueWithIdentifier:EssayCommentToShowSegueNameStringStatic sender:self];
 }
+
+-(void)collectClicked{
+    [[UserCollectionBackDataController getInstance] collectAnArticle:articleID withSuccessCallTarget:self successCall:nil];
+}
+
+
+-(void)weiboShareClickedCallBack{
+    NSLog(@"weibo");
+}
+
+-(void)tencentWeiboShareClickedCallBack{
+    NSLog(@"tencent");
+}
+
+-(void)wechatFriendsShareClickedCallBack{
+    NSLog(@"wec f");
+}
+
+-(void)wechatFriendsCircleShareClickedCallBack{
+    NSLog(@"wec c");
+}
+
+
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
     UIViewController* viewController = segue.destinationViewController;

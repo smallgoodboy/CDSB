@@ -9,12 +9,13 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import "ShangbaoOriginViewController.h"
+#import "PublicContentViewController.h"
 
 @interface NavigationContorllerManager : NSObject{
     NSMutableArray* navControllerArray;
 }
 
-@property ShangbaoOriginViewController* shangbaoOrignViewControllerInstance;
+@property PublicContentViewController* notifyNavigationStartViewControllerInstance;
 
 +(NavigationContorllerManager *)getInstance;
 

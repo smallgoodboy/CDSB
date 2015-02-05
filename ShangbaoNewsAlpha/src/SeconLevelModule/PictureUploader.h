@@ -14,6 +14,7 @@
 }
 
 +(PictureUploader *)getInstance;
++ (NSString *)contentTypeForImageData:(NSData *)data ;
 
 //-(void)uploadPicture : (UIImage*) imageReadyToUpload imageDescriberDict : (NSMutableDictionary*)dict completeCall : (SEL)completeCall target : (id) target;
 -(void)uploadPictureWithAFntework:(UIImage *)imageReadyToUpload imageDescriberDict:(NSMutableDictionary *)dict completeCall:(SEL)completeCall target:(id)target;

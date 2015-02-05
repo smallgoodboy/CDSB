@@ -84,13 +84,18 @@
         }
         [self analyseModuleServerData:responseObject];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        pageLoadednumber--;
+        
         NSLog(@"Error: %@", error);
         
         if(isRefreshingTableAndNotLoadingMore){
             [backDataArray removeAllObjects];
         }
-        [self analyseModuleServerData:[OfflineCacher getObjForKey:contentURLString]];
+        id cacheContent = [OfflineCacher getObjForKey:contentURLString];
+        if(cacheContent){
+            [self analyseModuleServerData:cacheContent];
+        }else{
+            pageLoadednumber--;
+        }
     }];
 }
 

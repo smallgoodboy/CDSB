@@ -17,6 +17,7 @@
 #import "PictureChengduCollectionBackDataController.h"
 
 #import "OfflineCacher.h"
+#import "AdvertisementManager.h"
 
 static MainBackDataLoader* mainBackDataLoaderSigliton;
 
@@ -33,6 +34,7 @@ static MainBackDataLoader* mainBackDataLoaderSigliton;
         NSLog(@"main json got!");
         [OfflineCacher cacheObj:responseObject forKey:ServerHomePageURLStringStatic];
         [[MainBackDataLoader getInstance] analyseMainPage: responseObject];
+        
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [PopOverHintManager showPopover:NetWorkDown];
         NSLog(@"Error: %@", error);
@@ -50,6 +52,7 @@ static MainBackDataLoader* mainBackDataLoaderSigliton;
     }
     
     id arrayObj = [(NSDictionary* )mainPageObj objectForKey:@"channel"];
+    [[AdvertisementManager getInstance] tryToLoadAdImage:[(NSDictionary* )mainPageObj objectForKey:@"pictureUrl"]];
     if([arrayObj isKindOfClass:[NSArray class]]){
         NSLog(@"yes");
     }else{

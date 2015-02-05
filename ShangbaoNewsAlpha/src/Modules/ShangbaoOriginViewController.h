@@ -10,8 +10,5 @@
 
 @interface ShangbaoOriginViewController : PullRefreshTableViewController
 @property (weak, nonatomic) IBOutlet PullTableView *frontPullRefreshTableView;
-- (IBAction)userInfoClicked:(id)sender;
-
--(void)processNotifyIssue;
 
 @end

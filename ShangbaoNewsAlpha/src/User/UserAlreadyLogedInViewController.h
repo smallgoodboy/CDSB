@@ -7,13 +7,16 @@
 //
 
 #import "RootDecoratorViewController.h"
+#import "RoundImageView.h"
 
 @interface UserAlreadyLogedInViewController : RootDecoratorViewController
 - (IBAction)logOutClicked:(id)sender;
-@property (weak, nonatomic) IBOutlet UIImageView *userImageView;
+@property (weak, nonatomic) IBOutlet RoundImageView *userImageView;
 
 @property (weak, nonatomic) IBOutlet UILabel *userNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *genderLabel;
 @property (weak, nonatomic) IBOutlet UILabel *birthdayLabel;
 @property (weak, nonatomic) IBOutlet UILabel *phoneNumberLabel;
+- (IBAction)userChangeAvatarClicked:(id)sender;
+@property (weak, nonatomic) IBOutlet UITableView *userSettingTable;
 @end

@@ -13,7 +13,7 @@ static NavigationContorllerManager* navigationContorllerManagerSigliton;
 
 @implementation NavigationContorllerManager
 
-@synthesize shangbaoOrignViewControllerInstance;
+@synthesize notifyNavigationStartViewControllerInstance;
 
 -(id)init{
     if(self = [super init]){
@@ -45,7 +45,7 @@ static NavigationContorllerManager* navigationContorllerManagerSigliton;
 }
 
 -(void)homePageNotifyProcess{
-    [shangbaoOrignViewControllerInstance processNotifyIssue];
+    [notifyNavigationStartViewControllerInstance processNotifyIssue];
 }
 
 /*****************************************/

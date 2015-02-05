@@ -9,6 +9,7 @@
 #import "UserBackDataManager.h"
 #import "StaticResourceManager.h"
 #import "AFNetworking.h"
+#import "PictureUploader.h"
 
 static UserBackDataManager* userBackDataManagerSigliton;
 
@@ -20,9 +21,13 @@ static UserBackDataManager* userBackDataManagerSigliton;
     
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     [manager GET:urlString parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        [target performSelector:successCall withObject:[NSString stringWithFormat:@"%d",UpLoadSuccess] withObject:responseObject];
+        if (target != nil && successCall != nil) {
+            [target performSelector:successCall withObject:[NSString stringWithFormat:@"%d",UpLoadSuccess] withObject:responseObject];
+        }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        [target performSelector:successCall withObject:[NSString stringWithFormat:@"%d",UnknownError] withObject:error];
+        if (target != nil && successCall != nil) {
+            [target performSelector:successCall withObject:[NSString stringWithFormat:@"%d",UnknownError] withObject:error];
+        }
     }];
 }
 
@@ -31,10 +36,14 @@ static UserBackDataManager* userBackDataManagerSigliton;
     manager.responseSerializer = [AFJSONResponseSerializer serializer];
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
     [manager POST:UserSignUpBaseURLStringStatic parameters:dict success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        [target performSelector:successCall withObject:[NSString stringWithFormat:@"%d",UpLoadSuccess] withObject:responseObject];
+        if (target != nil && successCall != nil) {
+            [target performSelector:successCall withObject:[NSString stringWithFormat:@"%d",UpLoadSuccess] withObject:responseObject];
+        }
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        [target performSelector:successCall withObject:[NSString stringWithFormat:@"%d",UnknownError] withObject:error];
+        if (target != nil && successCall != nil) {
+            [target performSelector:successCall withObject:[NSString stringWithFormat:@"%d",UnknownError] withObject:error];
+        }
     }];
 }
 
@@ -43,20 +52,97 @@ static UserBackDataManager* userBackDataManagerSigliton;
     manager.responseSerializer = [AFJSONResponseSerializer serializer];
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
     [manager POST:UserLoginBaseURLStringStatic parameters:dict success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        [target performSelector:successCall withObject:[NSString stringWithFormat:@"%d",UpLoadSuccess] withObject:responseObject];
+        if (target != nil && successCall != nil) {
+            [target performSelector:successCall withObject:[NSString stringWithFormat:@"%d",UpLoadSuccess] withObject:responseObject];
+        }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        [target performSelector:successCall withObject:[NSString stringWithFormat:@"%d",UnknownError] withObject:error];
+        if (target != nil && successCall != nil) {
+            [target performSelector:successCall withObject:[NSString stringWithFormat:@"%d",UnknownError] withObject:error];
+        }
     }];
 }
 
 -(void)getUserInfoOfsuccessCallTarget : (id)target successCall : (SEL)successCall{
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     [manager GET:UserInfoBaseURLStringStatic parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        [target performSelector:successCall withObject:[NSString stringWithFormat:@"%d",UpLoadSuccess] withObject:responseObject];
+        if (target != nil && successCall != nil) {
+            [target performSelector:successCall withObject:[NSString stringWithFormat:@"%d",UpLoadSuccess] withObject:responseObject];
+        }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        [target performSelector:successCall withObject:[NSString stringWithFormat:@"%d",UnknownError] withObject:error];
+        if (target != nil && successCall != nil) {
+            [target performSelector:successCall withObject:[NSString stringWithFormat:@"%d",UnknownError] withObject:error];
+        }
     }];
 }
+
+-(void)modifyUserPasswdWithUserDict : (NSDictionary*)dict successCallTarget : (id)target successCall : (SEL)successCall{
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    [manager POST:UserPasswdModifyBaseURLStringStatic parameters:dict success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        if (target != nil && successCall != nil) {
+            [target performSelector:successCall withObject:[NSString stringWithFormat:@"%d",UpLoadSuccess] withObject:responseObject];
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if (target != nil && successCall != nil) {
+            [target performSelector:successCall withObject:[NSString stringWithFormat:@"%d",UnknownError] withObject:error];
+        }
+    }];
+}
+
+-(NSProgress*)uploadUserAvatar:(UIImage *)imageReadyToUpload imageDescriberDict:(NSMutableDictionary *)dict completeCall:(SEL)completeCall target:(id)target{
+    
+    NSData *imageData = UIImageJPEGRepresentation(imageReadyToUpload, 1.0);
+    
+    NSString* imageFileTypeString = [PictureUploader contentTypeForImageData:imageData];
+    
+    NSMutableURLRequest *request = [[AFHTTPRequestSerializer serializer] multipartFormRequestWithMethod:@"POST" URLString:UserAvatarUploadURLStringStatic parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+        [formData appendPartWithFileData:imageData name:@"file" fileName:[NSString stringWithFormat: @"avatar.%@", imageFileTypeString] mimeType:[NSString stringWithFormat:@"image/%@",imageFileTypeString]];
+    } error:nil];
+    
+    AFURLSessionManager *manager = [[AFURLSessionManager alloc] initWithSessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
+    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+    NSProgress *progress = nil;
+    
+    NSURLSessionUploadTask *uploadTask = [manager uploadTaskWithStreamedRequest:request progress:&progress completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
+        if (error) {
+            NSLog(@"Error: %@", error);
+            if(target != nil && completeCall != nil){
+                [target performSelector:completeCall withObject:[NSString stringWithFormat:@"%d", NetWorkDown]];
+            }
+        } else {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                NSString *responseString = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
+                
+                NSLog(@"HttpResponseBody %@",responseString);
+                //[self uploadPictureDescribe:responseString pictureDescribeDict:dict completeCall:completeCall target:target];
+                
+            });
+        }
+    }];
+    
+    [uploadTask resume];
+    //[progress fractionCompleted];
+    return progress;
+}
+
+/*-(void)uploadUserInfo : (NSString*)pictureURL pictureDescribeDict : (NSMutableDictionary*)dict completeCall:(SEL)completeCall target:(id)target{
+    NSMutableArray* array = [[NSMutableArray alloc] init];
+    [array addObject:pictureURL];
+    [dict setObject:[NSArray arrayWithArray: array] forKey:@"picturesUrl"];
+    
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    [manager POST:PictureDescrierUploadURLStringStatic parameters:dict success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"JSON: %@", [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding]);
+        [((PictureUploadViewController*)target) performSelector:completeCall withObject:[NSString stringWithFormat:@"%d", UpLoadSuccess]];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"Error: %@", error);
+        [((PictureUploadViewController*)target) performSelector:completeCall withObject:[NSString stringWithFormat:@"%d", UnknownError]];
+    }];
+}*/
+
 
 -(BOOL)isUserLogin{
     return [self findLoginCookie];

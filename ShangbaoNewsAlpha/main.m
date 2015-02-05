@@ -9,10 +9,13 @@
 #import <UIKit/UIKit.h>
 #import "AppDelegate.h"
 #import "OfflineCacher.h"
+#import "IQKeyboardManager.h"
 
 int main(int argc, char * argv[]) {
     @autoreleasepool {
         [OfflineCacher readCache];
+        [[IQKeyboardManager sharedManager] setEnable:YES];
+        [IQKeyboardManager sharedManager].keyboardDistanceFromTextField = 5;
         return UIApplicationMain(argc, argv, nil, NSStringFromClass([AppDelegate class]));
     }
 }

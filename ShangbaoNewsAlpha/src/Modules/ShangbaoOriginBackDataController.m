@@ -14,8 +14,6 @@ static ShangbaoOriginBackDataController* shangbaoOriginBackDataControllerSiglito
 
 @implementation ShangbaoOriginBackDataController
 
-@synthesize notifyNewsIDInt;
-
 -(id)init{
     if(self=[super init]){
         isModuleUsePaging = YES;
@@ -54,15 +52,7 @@ static ShangbaoOriginBackDataController* shangbaoOriginBackDataControllerSiglito
     [self.frontTableView reloadData];
 }
 
--(void)setNotifyNewsId : (NSInteger)newsID{
-    [self setNotifyNewsIDInt:newsID];
-}
 
--(void)getNotifyWhileRunning : (NSInteger)newsID{
-    [NavigationContorllerManager getEveryNavControllerToFather];
-    [self setNotifyNewsIDInt:newsID];
-    [NavigationContorllerManager startAutoNavigation];
-}
 
 /*****************************************/
 /*       For      Sigliton               */

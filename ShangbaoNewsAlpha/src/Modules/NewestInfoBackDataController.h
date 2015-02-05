@@ -11,6 +11,12 @@
 
 @interface NewestInfoBackDataController : PublicContentBackDataController
 
+@property NSInteger notifyNewsIDInt;
+
 +(NewestInfoBackDataController *)getInstance;
+
+
+-(void)setNotifyNewsId : (NSInteger)newsID;
+-(void)getNotifyWhileRunning : (NSInteger)newsID;
 
 @end

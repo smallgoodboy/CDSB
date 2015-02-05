@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 @interface UserBackDataManager : NSObject
 +(UserBackDataManager*)getInstance;
@@ -15,6 +16,9 @@
 -(void)userSignUpWithInfo : (NSDictionary*)dict successCallTarget : (id)target successCall : (SEL)successCall;
 -(void)userloginWithUserDict : (NSDictionary*)dict successCallTarget : (id)target successCall : (SEL)successCall;
 -(void)getUserInfoOfsuccessCallTarget : (id)target successCall : (SEL)successCall;
+-(void)modifyUserPasswdWithUserDict : (NSDictionary*)dict successCallTarget : (id)target successCall : (SEL)successCall;
+-(NSProgress*)uploadUserAvatar:(UIImage *)imageReadyToUpload imageDescriberDict:(NSMutableDictionary *)dict completeCall:(SEL)completeCall target:(id)target;
+
 
 -(BOOL)isUserLogin;
 -(void)logOut;

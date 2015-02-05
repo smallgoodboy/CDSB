@@ -10,11 +10,9 @@
 
 @interface ShangbaoOriginBackDataController : BackDataBaseController
 
-@property NSInteger notifyNewsIDInt;
+
 
 +(ShangbaoOriginBackDataController *)getInstance;
 
--(void)setNotifyNewsId : (NSInteger)newsID;
--(void)getNotifyWhileRunning : (NSInteger)newsID;
 
 @end

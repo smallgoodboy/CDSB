@@ -9,7 +9,7 @@
 #import "AppDelegate.h"
 #import "APService.h"
 #import "UMSocial.h"
-#import "ShangbaoOriginBackDataController.h"
+#import "NewestInfoBackDataController.h"
 #import "UMSocialWechatHandler.h"
 #import "UMSocialSinaHandler.h"
 
@@ -34,7 +34,7 @@
     }else{
         newsToOpen = [res integerValue];
     }
-    [[ShangbaoOriginBackDataController getInstance] setNotifyNewsId:newsToOpen];
+    [[NewestInfoBackDataController getInstance] setNotifyNewsId:newsToOpen];
     
     // Required
 #if __IPHONE_OS_VERSION_MAX_ALLOWED > __IPHONE_7_1
@@ -117,7 +117,7 @@
         }else{
             newsToOpen = [res integerValue];
         }
-        [[ShangbaoOriginBackDataController getInstance] getNotifyWhileRunning:newsToOpen];
+        [[NewestInfoBackDataController getInstance] getNotifyWhileRunning:newsToOpen];
     }
     
     // IOS 7 Support Required

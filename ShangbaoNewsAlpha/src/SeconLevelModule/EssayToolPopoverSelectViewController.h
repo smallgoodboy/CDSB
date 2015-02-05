@@ -13,11 +13,18 @@
     
     SEL commentCallBack;
     SEL likeCallBack;
+    SEL userCollectionCallBack;
+    
+    SEL weiboShareCallBack;
+    SEL tencentWeiboShareCallBack;
+    SEL wechatFrinedsShareCallBack;
+    SEL wechatFriendsCircleCallBack;
 }
 
 @property BOOL isPopMenuOpen;
 
--(void)initCallBackWithTarget : (id)target commentCallBack : (SEL)commentCallBackSEL likeCallBack : (SEL)likeCallBackSEL;
+-(void)initCallBackWithTarget : (id)target commentCallBack : (SEL)commentCallBackSEL likeCallBack : (SEL)likeCallBackSEL userCollectionCallBack : (SEL)userCollectCallBackSEL;
+-(void)initShareCallBackWeibo : (SEL)weiboShareCallBackSEL tencentWeibo : (SEL)tencentWeiboShareCallBackSEL wechatFriends : (SEL) wechatFrinedsShareCallBackSEL wechatFriendsCircel : (SEL) wechatFriendsCircleCallBackSEL;
 -(void)openPopMenu;
 
 -(void)closePopMenu;

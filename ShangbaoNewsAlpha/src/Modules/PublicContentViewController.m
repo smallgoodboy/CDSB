@@ -23,6 +23,10 @@
 #import "EssayContentViewController.h"
 
 #import "NavigationContorllerManager.h"
+#import "UserBackDataManager.h"
+#import "ShangbaoOriginBackDataController.h"
+#import "UserManager.h"
+#import "OfflineCacher.h"
 
 @interface PublicContentViewController ()<UITableViewDelegate, UITableViewDataSource>{
     PublicContentBackDataController* publicContentBackDataControllerInstance;
@@ -51,6 +55,64 @@
     self.frontPullRefreshTableView.dataSource = self;
     
     [NavigationContorllerManager addANavigationController:self.navigationController];
+    
+    if([selectedModuleNameString isEqualToString:NewestInfoNameKeyStringStatic]){
+        
+        
+        [[NavigationContorllerManager getInstance] setNotifyNavigationStartViewControllerInstance:self];
+        
+        [[UserManager getInstance] getUserInfo];
+        if(![self processNotifyIssue]){
+            [self adProcessor];
+        }
+    }
+}
+
+-(void)adProcessor{
+    
+    NSString* adImageName = @"advertisePic.jpg";
+    //NSLog(@"%@", [imageObj class]);
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    
+    //获取路径
+    //1、参数NSDocumentDirectory要获取的那种路径
+    NSArray*  paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES);
+    //2、得到相应的Documents的路径
+    NSString* documentDirectory = [paths objectAtIndex:0];
+    
+    //3、更改到待操作的目录下
+    [fileManager changeCurrentDirectoryPath:[documentDirectory stringByExpandingTildeInPath]];
+    NSString *path = [documentDirectory stringByAppendingPathComponent:adImageName];
+    
+    NSString* formalPath = [OfflineCacher getObjForKey:@"adImagePath"];
+    path = [formalPath stringByAppendingPathComponent:adImageName];
+    UIImage* adImage = [UIImage imageWithContentsOfFile:path];
+    
+    
+    CGRect adFrame = CGRectMake(0, 0, 320, 480);
+    UIImageView* adImageView = [[UIImageView alloc] initWithFrame:adFrame];
+    [adImageView setImage:adImage];
+    [self.tabBarController.view addSubview:adImageView];
+    
+    [UIView animateWithDuration:2.0 animations:^{
+        [adImageView setAlpha:0.99];
+    } completion:^(BOOL finished) {
+        [UIView animateWithDuration:2.0 animations:^{
+            [adImageView setAlpha:0];
+        } completion:^(BOOL finished){
+            [adImageView removeFromSuperview];
+        }];
+    }];
+    
+}
+
+-(BOOL)processNotifyIssue{
+    if([(NewestInfoBackDataController*)publicContentBackDataControllerInstance notifyNewsIDInt] != -1){
+        [self.navigationController.tabBarController setSelectedIndex:0];
+        [self performSegueWithIdentifier:NewsNotifiedToShowSegueNameStringStatic sender:self];
+        return true;
+    }
+    return false;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -149,9 +211,25 @@
     }else if ([viewController isKindOfClass:[EssayContentViewController class]]){
         EssayContentViewController* essayViewController = (EssayContentViewController*)viewController;
         BackDataNode* node = [publicContentBackDataControllerInstance getNodeInSection:selectedSection andRow:selectedRow];
-        [essayViewController setUrlToOpen: [node getNodeArticleURL]];
+        if([self.frontPullRefreshTableView indexPathForSelectedRow]){
+            [essayViewController setUrlToOpen: [node getNodeArticleURL]];
+        }else{
+            if([(NewestInfoBackDataController*)publicContentBackDataControllerInstance notifyNewsIDInt] != -1){
+                EssayContentViewController* essayViewController = (EssayContentViewController*)viewController;
+                [essayViewController setUrlToOpen: [NSString stringWithFormat:@"%@/%ld",ArticleBaseURLStringStatic, (long)[(NewestInfoBackDataController*)publicContentBackDataControllerInstance notifyNewsIDInt]]];
+            }
+        }
     }
     //NSLog(@"page open");
+}
+
+- (IBAction)userInfoClicked:(id)sender {
+    if([[UserBackDataManager getInstance] isUserLogin]){
+        [self performSegueWithIdentifier:UserStatusLoginSegueNameStringStatic sender:self];
+    }else{
+        [self performSegueWithIdentifier:UserStatusNotLoginSegueNameStringStatic sender:self];
+    }
+    
 }
 
 @end

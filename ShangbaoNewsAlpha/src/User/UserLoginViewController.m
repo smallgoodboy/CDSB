@@ -68,7 +68,7 @@
             if([[(NSDictionary*)backObj objectForKey:@"resultCode"] integerValue] == 1){
                 //注册成功
                 NSLog(@"登陆成功");
-                [self dismissViewControllerAnimated:YES completion:nil];
+                [self.navigationController popViewControllerAnimated:YES];
                 return;
             }
         }

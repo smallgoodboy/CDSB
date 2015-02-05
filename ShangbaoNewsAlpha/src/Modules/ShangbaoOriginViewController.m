@@ -42,22 +42,12 @@
     self.frontPullRefreshTableView.delegate = self;
     self.frontPullRefreshTableView.dataSource = self;
     
-    [[IQKeyboardManager sharedManager] setEnable:YES];
-    [IQKeyboardManager sharedManager].keyboardDistanceFromTextField = 5;
+    
     
     [NavigationContorllerManager addANavigationController:self.navigationController];
-    [[NavigationContorllerManager getInstance] setShangbaoOrignViewControllerInstance:self];
-    
-    [[UserManager getInstance] getUserInfo];
-    [self processNotifyIssue];
+
 }
 
--(void)processNotifyIssue{
-    if([shangbaoOriginBackDataControllerInstance notifyNewsIDInt] != -1){
-        [self.navigationController.tabBarController setSelectedIndex:0];
-        [self performSegueWithIdentifier:ShangbaoOriginNotifyToShowSegueNameStringStatic sender:self];
-    }
-}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -116,20 +106,8 @@
         }
     }else if([viewController isKindOfClass:[UserAlreadyLogedInViewController class]] ||[viewController isKindOfClass:[UserLoginViewController class]]){
         
-    }else{
-        if([shangbaoOriginBackDataControllerInstance notifyNewsIDInt] != -1){
-            EssayContentViewController* essayViewController = (EssayContentViewController*)viewController;
-            [essayViewController setUrlToOpen: [NSString stringWithFormat:@"%@/%ld",ArticleBaseURLStringStatic, (long)[shangbaoOriginBackDataControllerInstance notifyNewsIDInt]]];
-        }
     }
-    //NSLog(@"page open");
+
 }
-- (IBAction)userInfoClicked:(id)sender {
-    if([[UserBackDataManager getInstance] isUserLogin]){
-        [self performSegueWithIdentifier:UserStatusLoginSegueNameStringStatic sender:self];
-    }else{
-        [self performSegueWithIdentifier:UserStatusNotLoginSegueNameStringStatic sender:self];
-    }
-    
-}
+
 @end

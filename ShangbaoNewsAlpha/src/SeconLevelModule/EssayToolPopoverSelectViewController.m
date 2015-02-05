@@ -27,11 +27,20 @@
     // Dispose of any resources that can be recreated.
 }
 
--(void)initCallBackWithTarget : (id)target commentCallBack : (SEL)commentCallBackSEL likeCallBack : (SEL)likeCallBackSEL{
+-(void)initCallBackWithTarget : (id)target commentCallBack : (SEL)commentCallBackSEL likeCallBack : (SEL)likeCallBackSEL userCollectionCallBack : (SEL)userCollectCallBackSEL{
     callBackTarget = target;
     commentCallBack = commentCallBackSEL;
     likeCallBack = likeCallBackSEL;
+    userCollectionCallBack = userCollectCallBackSEL;
 }
+
+-(void)initShareCallBackWeibo : (SEL)weiboShareCallBackSEL tencentWeibo : (SEL)tencentWeiboShareCallBackSEL wechatFriends : (SEL) wechatFrinedsShareCallBackSEL wechatFriendsCircel : (SEL) wechatFriendsCircleCallBackSEL{
+    weiboShareCallBack = weiboShareCallBackSEL;
+    tencentWeiboShareCallBack = tencentWeiboShareCallBackSEL;
+    wechatFrinedsShareCallBack = wechatFrinedsShareCallBackSEL;
+    wechatFriendsCircleCallBack = wechatFriendsCircleCallBackSEL;
+}
+
 
 -(id)init{
     if(self = [super init]){
@@ -43,6 +52,7 @@
                                      highlighted:@"TwitterSelected"
                                      disabled:@"Twiiter"];
         [twitter.button setBackgroundColor:[UIColor colorWithWhite:0.0f alpha:0.8f]];
+        [twitter.button addTarget:self action:@selector(weiboShareClickedCallBack) forControlEvents:UIControlEventTouchUpInside];
         [twitter setCloseOnSelect:YES];
         
         JCGridMenuColumn *email = [[JCGridMenuColumn alloc]
@@ -52,6 +62,7 @@
                                    highlighted:@"EmailSelected"
                                    disabled:@"Email"];
         [email.button setBackgroundColor:[UIColor colorWithWhite:0.0f alpha:0.8f]];
+        [email.button addTarget:self action:@selector(tencentWeiboShareClickedCallBack) forControlEvents:UIControlEventTouchUpInside];
         [email setCloseOnSelect:YES];
         
         JCGridMenuColumn *pocket = [[JCGridMenuColumn alloc]
@@ -61,6 +72,7 @@
                                     highlighted:@"PocketSelected"
                                     disabled:@"Pocket"];
         [pocket.button setBackgroundColor:[UIColor colorWithWhite:0.0f alpha:0.8f]];
+        [pocket.button addTarget:self action:@selector(wechatFriendsShareClickedCallBack) forControlEvents:UIControlEventTouchUpInside];
         [pocket setCloseOnSelect:YES];
         
         JCGridMenuColumn *facebook = [[JCGridMenuColumn alloc]
@@ -70,6 +82,7 @@
                                       highlighted:@"FacebookSelected"
                                       disabled:@"Facebook"];
         [facebook.button setBackgroundColor:[UIColor colorWithWhite:0.0f alpha:0.8f]];
+        [facebook.button addTarget:self action:@selector(wechatFriendsCircleShareClickedCallBack) forControlEvents:UIControlEventTouchUpInside];
         [facebook setCloseOnSelect:YES];
         
         JCGridMenuRow *likeRow = [[JCGridMenuRow alloc] initWithImages:@"heart" selected:@"heart" highlighted:@"heart" disabled:@"heart"];
@@ -81,7 +94,7 @@
         
         
         JCGridMenuRow *share = [[JCGridMenuRow alloc] initWithImages:@"Share" selected:@"CloseSelected" highlighted:@"ShareSelected" disabled:@"Share"];
-        [share setColumns:[[NSMutableArray alloc] initWithObjects:pocket, twitter, facebook, email, nil]];
+        [share setColumns:[[NSMutableArray alloc] initWithObjects:twitter, email, pocket, facebook, nil]];
         [share setIsModal:NO];
         [share setHideAlpha:0.2f];
         [share setIsSeperated:YES];
@@ -93,6 +106,7 @@
         [favourite setHideAlpha:1.0f];
         [favourite setIsSeperated:NO];
         [favourite setIsModal:NO];
+        [favourite.button addTarget:self action:@selector(collectionClickedCallBack) forControlEvents:UIControlEventTouchUpInside];
         [favourite.button setBackgroundColor:[UIColor colorWithWhite:0.0f alpha:0.4f]];
         
         // Comments
@@ -163,6 +177,12 @@
     
 }
 
+-(void)collectionClickedCallBack{
+    if(callBackTarget != nil && userCollectionCallBack != nil){
+        [callBackTarget performSelector:userCollectionCallBack withObject:nil];
+    }
+}
+
 -(void)commentClickedCallBack{
     if(callBackTarget != nil && commentCallBack != nil){
         [callBackTarget performSelector:commentCallBack withObject:nil];
@@ -172,6 +192,31 @@
 -(void)likeClickedCallBack{
     if(callBackTarget != nil && likeCallBack != nil){
         [callBackTarget performSelector:likeCallBack withObject:nil];
+    }
+}
+
+
+-(void)weiboShareClickedCallBack{
+    if(callBackTarget != nil && weiboShareCallBack != nil){
+        [callBackTarget performSelector:weiboShareCallBack withObject:nil];
+    }
+}
+
+-(void)tencentWeiboShareClickedCallBack{
+    if(callBackTarget != nil && tencentWeiboShareCallBack != nil){
+        [callBackTarget performSelector:tencentWeiboShareCallBack withObject:nil];
+    }
+}
+
+-(void)wechatFriendsShareClickedCallBack{
+    if(callBackTarget != nil && wechatFrinedsShareCallBack != nil){
+        [callBackTarget performSelector:wechatFrinedsShareCallBack withObject:nil];
+    }
+}
+
+-(void)wechatFriendsCircleShareClickedCallBack{
+    if(callBackTarget != nil && wechatFriendsCircleCallBack != nil){
+        [callBackTarget performSelector:wechatFriendsCircleCallBack withObject:nil];
     }
 }
 

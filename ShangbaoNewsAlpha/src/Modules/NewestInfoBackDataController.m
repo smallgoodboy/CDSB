@@ -7,10 +7,23 @@
 //
 
 #import "NewestInfoBackDataController.h"
+#import "NavigationContorllerManager.h"
 
 static NewestInfoBackDataController* newestInfoBackDataControllerSigliton;
 
 @implementation NewestInfoBackDataController
+
+@synthesize notifyNewsIDInt;
+
+-(void)setNotifyNewsId : (NSInteger)newsID{
+    [self setNotifyNewsIDInt:newsID];
+}
+
+-(void)getNotifyWhileRunning : (NSInteger)newsID{
+    [NavigationContorllerManager getEveryNavControllerToFather];
+    [self setNotifyNewsIDInt:newsID];
+    [NavigationContorllerManager startAutoNavigation];
+}
 
 /*****************************************/
 /*       For      Sigliton               */
